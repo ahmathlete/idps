@@ -1,0 +1,33 @@
+---
+title: "Todo_list"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Todo_list}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(idps)
+```
+
+## ToDo list 
+
+### Part 1:
+1. function to download GPM data 
+2. function to aggregate GPM data monthly 
+3. function to sepreate GPM data according to thresholds and systems. 
+4. function for ccl 
+5. FFT and cross correlation 
+6. PIV quality control 
+7. tracking 
+8. writing hdf5 files 
+
+### Part 2:
