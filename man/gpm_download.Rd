@@ -13,7 +13,7 @@ gpm_download(
   password,
   dates,
   product,
-  band = 6,
+  band = "precipitationCal",
   lonMin = -86,
   lonMax = -66,
   latMin = -19.25,
@@ -33,7 +33,7 @@ gpm_download(
 
 \item{product}{IMERG product (character). Currently are supported: 'finalrun', 'late' and 'early'.}
 
-\item{band}{The available bands are: \cr
+\item{band}{The available bands (character) are: \cr
 band "HQobservationTime"  \cr
 band "HQprecipSource"  \cr
 band "HQprecipitation"  \cr

@@ -6,7 +6,7 @@
 #' @param password pmm password (character). See https://pmm.nasa.gov/data-access/downloads/gpm
 #' @param product IMERG product (character). Currently are supported: 'finalrun', 'late' and 'early'.
 #' @param dates sequences of days.
-#' @param band The available bands are: \cr
+#' @param band The available bands (character) are: \cr
 #' band "HQobservationTime"  \cr
 #' band "HQprecipSource"  \cr
 #' band "HQprecipitation"  \cr
@@ -41,7 +41,7 @@ gpm_download <- function(path,
                          password,
                          dates,
                          product,
-                         band=6,
+                         band="precipitationCal",
                          lonMin = -86,
                          lonMax = -66,
                          latMin = -19.25,
