@@ -1,8 +1,5 @@
 #' @title Download IMERG v06B Final, Early and Late Run
 #'
-#' @author Cesar Aybar
-#' @source https://github.com/csaybar/gpm/
-#' @note Modified by Ahmed Homoudi, November 2022.
 #' @description Download IMERG v06B Final, Early and Late Run.
 #' @param path path (character). The default corresponds to the working directory, getwd(). Missing values will be ignored.
 #' @param user pmm user (character). See https://pmm.nasa.gov/data-access/downloads/gpm
@@ -10,44 +7,25 @@
 #' @param product IMERG product (character). Currently are supported: 'finalrun', 'late' and 'early'.
 #' @param dates sequences of days.
 #' @param band The available bands are: \cr
-#' band "HQobservationTime" = 1. \cr
-#' band "HQprecipSource" = 2. \cr
-#' band "HQprecipitation" = 3. \cr
-#' band "IRkalmanFilterWeight" = 4. \cr
-#' band "IRprecipitation" = 5. \cr
-#' band "precipitationCal" = 6. \cr
-#' band "precipitationUncal" = 7. \cr
-#' band "probabilityLiquidPrecipitation" = 8. \cr
-#' band "randomError" = 9. \cr
+#' band "HQobservationTime"  \cr
+#' band "HQprecipSource"  \cr
+#' band "HQprecipitation"  \cr
+#' band "IRkalmanFilterWeight" \cr
+#' band "IRprecipitation"\cr
+#' band "precipitationCal"  \cr
+#' band "precipitationUncal"  \cr
+#' band "probabilityLiquidPrecipitation"  \cr
+#' band "randomError"  \cr
 #' @param lonMin Minimum latitude of bounding box
 #' @param lonMax Maximum latitude of bounding box
 #' @param latMin Minimum longitude of bounding box
 #' @param latMax Maximum longitude of bounding box
-#' @param removeHDF5 Remove HD5 files after the conversion to GEOTIFF
+#' @param removeHDF5 Remove HD5 files after the conversion to NetCDF
 #' @param quiet logical; suppress info of the download.
-#' @param n Specify maximum number of connections (axel parameter)
-#' @param s Specify maximum speed (bytes per second)
-#' @details
-#' You need to have installed "Axel download accelerator
-#' application" and GDAL. Obs: If you are using Windows,
-#' the executables of "GDAL" and "AXEL" must be set as
-#' system variables. For install axel try the following: \cr
 #'
-#' Ubuntu/Debian users: apt-get install axel \cr
-#' Windows users: gpm_getaxel() \cr
-#'
-#' The use of the "PPS" ftp to download GPM and TRMM data is free, but you first need register
-#' your email address in http://registration.pps.eosdis.nasa.gov/registration/.
-#' You can found more information about axel here:\cr
-#' https://github.com/axel-download-accelerator/axel/.
-#' @importFrom raster raster res extent flip crop writeRaster projection 'res<-' 'projection<-' as.matrix
-#' @importFrom lubridate year day month
-#' @importFrom gdalUtils get_subdatasets
-#' @importFrom stringr str_subset str_remove_all str_subset str_replace_all str_remove
-#' @importFrom RCurl getURL
-#' @importFrom purrr map
-#' @importFrom magrittr %>%
-#'
+#' @author Cesar Aybar
+#' @source https://github.com/csaybar/gpm/
+#' @note Modified by Ahmed Homoudi, November 2022.
 #' @examples
 #' \dontrun{
 #' gpm_download(path = '.',
@@ -69,102 +47,22 @@ gpm_download <- function(path,
                          latMin = -19.25,
                          latMax = 1.25,
                          removeHDF5 = TRUE,
-                         quiet = TRUE,
-                         n = 1,
-                         s = 2600000
+                         quiet = TRUE
 ) {
 
 
 # Create a list with the files to download --------------------------------
 
-  # main url is
-  #late https://gpm1.gesdisc.eosdis.nasa.gov/data/GPM_L3/GPM_3IMERGHHL.06/
-  #early https://gpm1.gesdisc.eosdis.nasa.gov/data/GPM_L3/GPM_3IMERGHHE.06/
-  #final https://gpm1.gesdisc.eosdis.nasa.gov/data/GPM_L3/GPM_3IMERGHH.06/
   message('Searching the IMERG-HDF5 files ... please wait')
   userpwd <- sprintf("%s:%s",user,password)
-  axel_exist()
-  gdaltranslate_exist()
-
 
   # calculate Julian day
   J.day<-format(as.Date(dates), "%j")
 
+  if (product == 'early'){
+    url<-"https://gpm1.gesdisc.eosdis.nasa.gov/data/GPM_L3/GPM_3IMERGHHE.06"
 
-  if (product == 'early') {
-    url <- 'https://gpm1.gesdisc.eosdis.nasa.gov/data/GPM_L3/GPM_3IMERGHHE.06/'
-    url_m <- sprintf('%s/%s%02d/',
-                     url,
-                     year(dates),
-                     month(dates))
-    url_m <- unique(url_m)
-
-
-    # Scrapping the ftp
-    imerg_bymonth <- url_m %>%
-      map(~ getURL(url = .x,
-                   ftp.use.epsv = FALSE,
-                   ftplistonly = TRUE,
-                   crlf = TRUE,
-                   userpwd = userpwd)) %>%
-      unlist()
-
-    # Getting only the HHR files
-    download_files <- imerg_bymonth %>%
-      map(~ strsplit(.x,'\r*\n')[[1]]) %>%
-      map(~ str_subset(.x,'HHR')) %>%
-      map(~ sprintf('%s/%s',url_m,.x)) %>%
-      '[['(1)
-
-    # From character to a list
-    datesf2 <- str_remove_all(dates,'-')
-    nums <- 1:length(datesf2)
-
-    imerg_files <- nums %>%
-      map(~ str_subset(download_files,datesf2[.x])) %>%
-      map(~ sort(.x)) %>%
-      'names<-'(datesf2) %>%
-      map(~ str_replace_all(.x,'ftp://', paste0('ftp://',userpwd,'@')))
-
-  }  else if (product == 'late'){
-
-    url <- 'https://gpm1.gesdisc.eosdis.nasa.gov/data/GPM_L3/GPM_3IMERGHHL.06/'
-    url_m <- sprintf('%s/%s%02d/',
-                     url,
-                     year(dates),
-                     month(dates))
-    url_m <- unique(url_m)
-
-
-    # Scrapping the ftp
-    imerg_bymonth <- url_m %>%
-      map(~ getURL(url = .x,
-                   ftp.use.epsv = FALSE,
-                   ftplistonly = TRUE,
-                   crlf = TRUE,
-                   userpwd = userpwd)) %>%
-      unlist()
-
-
-    # Getting only the HHR files
-    download_files <- imerg_bymonth %>%
-      map(~ strsplit(.x,'\r*\n')[[1]]) %>%
-      map(~ str_subset(.x,'HHR')) %>%
-      map(~ sprintf('%s/%s',url_m,.x)) %>%
-      '[['(1)
-
-    # From character to a list
-    datesf2 <- str_remove_all(dates,'-')
-    nums <- 1:length(datesf2)
-    imerg_files <- nums %>%
-      map(~ str_subset(download_files,datesf2[.x])) %>%
-      map(~ sort(.x)) %>%
-      'names<-'(datesf2) %>%
-      map(~ str_replace_all(.x,'ftp://', paste0('ftp://',userpwd,'@')))
-
-  }  else if (product == 'finalrun'){
-
-    url <- 'https://gpm1.gesdisc.eosdis.nasa.gov/data/GPM_L3/GPM_3IMERGHH.06'
+    #get sub directory
     url_d <- paste0(url,
                     "/",
                     lubridate::year(dates),
@@ -173,30 +71,116 @@ gpm_download <- function(path,
                     "/")
 
     # Scrapping the http
-    imerg_byday <- url_d %>%
-      map(~ getURL(url = .x,
-                   #ftp.use.epsv = FALSE,
-                   #ftplistonly = TRUE,
-                   #crlf = TRUE,
-                   userpwd = userpwd))
+    imerg_byday <- RCurl::getURL(url = url_d,
+                                 ftplistonly = TRUE,
+                                 userpwd = userpwd)
 
-    # Getting only the HHR files
-    download_files <- imerg_byday %>%
-      map(~ strsplit(.x,'\r*\n')[[1]]) %>%
-      map(~ str_subset(.x,'HHR'))
+    # list split
+    imerg_byday <-unlist(stringr::str_split(imerg_byday,'\r*\n'))
 
-    # From character to a list
-    datesf2 <- str_remove_all(dates,'-')
-    nums <- 1:length(datesf2)
 
-    download_files <- nums %>%
-      map(~sprintf('%s/%s',url_d[.x],download_files[[.x]])) #url + file name
+    imerg_byday <-lapply(imerg_byday, FUN = function(x){
+      stringr::str_extract(string = x,
+                           pattern = "(?<=3B).*(?=HDF5\"><img)")
+    })
 
-    imerg_files <- nums %>%
-      map(~ str_subset(download_files[[.x]], datesf2[.x])) %>%
-      map(~ sort(.x)) %>%
-      'names<-'(datesf2) %>%
-      map(~ str_replace_all(.x,'ftp://', paste0('ftp://',userpwd,'@')))
+    # remove NA
+    imerg_byday<- imerg_byday[!is.na(imerg_byday)]%>%
+      unlist()
+
+
+    # fix files names
+    imerg_byday<-paste0("3B",
+                        imerg_byday,
+                        "HDF5")
+
+    # make download links
+    imerg_links<-paste0(url_d,
+                        imerg_byday)
+
+    #test
+    # writeLines(imerg_byday, con = "index.html")
+    # # (code to write some content to the file)
+    # rstudioapi::viewer("index.html")
+
+  } else if (product == 'late'){
+    url<-"https://gpm1.gesdisc.eosdis.nasa.gov/data/GPM_L3/GPM_3IMERGHHL.06"
+
+    #get sub directory
+    url_d <- paste0(url,
+                    "/",
+                    lubridate::year(dates),
+                    "/",
+                    J.day,
+                    "/")
+
+    # Scrapping the http
+    imerg_byday <- RCurl::getURL(url = url_d,
+                                 ftplistonly = TRUE,
+                                 userpwd = userpwd)
+
+    # list split
+    imerg_byday <-unlist(stringr::str_split(imerg_byday,'\r*\n'))
+
+
+    imerg_byday <-lapply(imerg_byday, FUN = function(x){
+      stringr::str_extract(string = x,
+                           pattern = "(?<=3B).*(?=HDF5\"><img)")
+    })
+
+    # remove NA
+    imerg_byday<- imerg_byday[!is.na(imerg_byday)]%>%
+      unlist()
+
+
+    # fix files names
+    imerg_byday<-paste0("3B",
+                        imerg_byday,
+                        "HDF5")
+
+    # make download links
+    imerg_links<-paste0(url_d,
+                        imerg_byday)
+
+
+  } else if (product == 'finalrun'){
+    url<-"https://gpm1.gesdisc.eosdis.nasa.gov/data/GPM_L3/GPM_3IMERGHH.06"
+
+    #get sub directory
+    url_d <- paste0(url,
+                    "/",
+                    lubridate::year(dates),
+                    "/",
+                    J.day,
+                    "/")
+
+    # Scrapping the http
+    imerg_byday <- RCurl::getURL(url = url_d,
+                                 ftplistonly = TRUE,
+                                 userpwd = userpwd)
+
+    # list split
+    imerg_byday <-unlist(stringr::str_split(imerg_byday,'\r*\n'))
+
+
+    imerg_byday <-lapply(imerg_byday, FUN = function(x){
+      stringr::str_extract(string = x,
+                           pattern = "(?<=3B).*(?=HDF5\"><img)")
+    })
+
+    # remove NA
+    imerg_byday<- imerg_byday[!is.na(imerg_byday)]%>%
+      unlist()
+
+
+    # fix files names
+    imerg_byday<-paste0("3B",
+                        imerg_byday,
+                        "HDF5")
+
+    # make download links
+    imerg_links<-paste0(url_d,
+                        imerg_byday)
 
   } else {
     stop('The "product" argument only can be: "finalrun", "late" or "early".')
@@ -204,31 +188,109 @@ gpm_download <- function(path,
 
   # Downloading one by one the IMERG files ----------------------------------
 
-  datesf2 <- names(imerg_files)
-  for (x in 1:length(datesf2)) {
-    fullpath <- sprintf('%s%s/',path,datesf2[x])
-    dir.create(fullpath)
-    for (z in 1:length(imerg_files[[x]])) {
-      imerg_file <- imerg_files[[x]][z]
-      fullname <- sprintf('%s%s',fullpath,basename(imerg_file))
-      message(sprintf('Downloading: %s',basename(imerg_file)))
-      axel(imerg_file,fullname,n,s,quiet)
 
-      file_tiff <- paste0(str_remove(fullname,'\\.RT-H5'),'.tif')
-      gdal_translate(fullname,band,file_tiff,removeHDF5)
+  # sort files/links
+  imerg_byday<-sort(imerg_byday)
+  imerg_links<-sort(imerg_links)
 
-      baseraster <- raster(extent(-180,180,-90,90))
-      res(baseraster) <- 0.1
-      projection(baseraster) <- "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
+  # donload HDF5 files
+  lapply(imerg_links, function(x){
 
-      file_r <- raster(file_tiff)
-      file_matrix <- as.matrix(file_r)
-      file_t <- file_matrix %>% t
-      mtrx = matrix(file_t, nrow=1800, ncol=3600)
-      baseraster[] <- mtrx
-      flp <- flip(baseraster,direction = "y")
-      prec <- crop(flp,extent(lonMin,lonMax,latMin,latMax))
-      writeRaster(prec/2,file_tiff, overwrite=T)
+    wget.R(url = x,
+           user,
+           userpwd,
+           dest_path = path,
+           quiet)
+
+  })
+
+  HDF5.files<-list.files(path = path,
+                         pattern = ".HDF5$",
+                         full.names = T)
+
+  terra::terraOptions(todisk=TRUE)
+  # loop over HDF5 files to convet to netcdf
+
+  for ( ifile in 1:length(HDF5.files)){
+
+    # get data
+    r<-terra::rast(HDF5.files[ifile])[band]
+
+    #transpose the SpatRaster
+    r <- terra::t(r)
+
+    #flip the SpatRaster
+    r <- terra::flip(r, "v")
+
+    # define the extent of the SpatRaster
+    terra::ext(r) <- c(-180, 180,-90, 90)
+
+    study_ext<-terra::ext(lonMin, lonMax, latMin, latMax)
+
+    #crop the SpatRaster
+    r<-terra::crop(r,study_ext)
+
+    #assign CRS
+    terra::crs(r)<-"+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
+
+    # get time
+    Mittel_time<-get_time_from_HDF5_filename(HDF5.files[ifile])
+
+    # assign time
+    terra::time(r)<-Mittel_time
+
+    #assign units
+    terra::units(r)<-"mm hr -1"
+
+    #assign short name
+    terra::varnames(r)<-band
+
+    #assign long name
+    terra::longnames(r)<-band
+
+    # combine files
+    if(ifile==1){
+      r.final<-r
+    }else{
+      r.final<-c(r.final,r)
     }
+    #terra::plot(r)
   }
-}
+
+  # remove
+  rm(r);gc(verbose = FALSE)
+
+
+# Writing netCDF file  ----------------------------------------------------
+
+
+
+  TIME1<- format(terra::time(r.final)[1]-15*60+1, format = "%Y%m%d-%H%M%S")
+  TIME2<- format(terra::time(r.final)[terra::nlyr(r.final)]+15*60+1,
+                 format = "%Y%m%d-%H%M%S")
+
+
+  ncname<-paste0("3B-HHR.MS.MRG.3IMERG.","_",TIME1,"_",TIME2,
+                 "_",band,"_.nc")
+  #netCDF file location
+
+  ncfname <- paste0(path, ncname)
+
+  terra::writeCDF(x = r.final,
+           filename = ncfname,
+           zname = "time",
+           varname = band,
+           compression = 9,
+           missval=1e32,
+           overwrite=TRUE)
+
+  rm(r.final);gc(verbose = F)
+
+  # clean
+  if(removeHDF5){
+    file.remove(HDF5.files)
+  }
+
+  message('Finisnsed downloading the requested data ;-)')
+
+  }

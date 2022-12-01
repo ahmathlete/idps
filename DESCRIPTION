@@ -14,10 +14,8 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 Imports: 
-    gdalUtils,
     lubridate,
     magrittr,
-    purrr,
-    raster,
     RCurl,
-    stringr
+    stringr,
+    terra

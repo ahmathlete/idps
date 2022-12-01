@@ -19,9 +19,7 @@ gpm_download(
   latMin = -19.25,
   latMax = 1.25,
   removeHDF5 = TRUE,
-  quiet = TRUE,
-  n = 1,
-  s = 2600000
+  quiet = TRUE
 )
 }
 \arguments{
@@ -36,15 +34,15 @@ gpm_download(
 \item{product}{IMERG product (character). Currently are supported: 'finalrun', 'late' and 'early'.}
 
 \item{band}{The available bands are: \cr
-band "HQobservationTime" = 1. \cr
-band "HQprecipSource" = 2. \cr
-band "HQprecipitation" = 3. \cr
-band "IRkalmanFilterWeight" = 4. \cr
-band "IRprecipitation" = 5. \cr
-band "precipitationCal" = 6. \cr
-band "precipitationUncal" = 7. \cr
-band "probabilityLiquidPrecipitation" = 8. \cr
-band "randomError" = 9. \cr}
+band "HQobservationTime"  \cr
+band "HQprecipSource"  \cr
+band "HQprecipitation"  \cr
+band "IRkalmanFilterWeight" \cr
+band "IRprecipitation"\cr
+band "precipitationCal"  \cr
+band "precipitationUncal"  \cr
+band "probabilityLiquidPrecipitation"  \cr
+band "randomError"  \cr}
 
 \item{lonMin}{Minimum latitude of bounding box}
 
@@ -54,30 +52,12 @@ band "randomError" = 9. \cr}
 
 \item{latMax}{Maximum longitude of bounding box}
 
-\item{removeHDF5}{Remove HD5 files after the conversion to GEOTIFF}
+\item{removeHDF5}{Remove HD5 files after the conversion to NetCDF}
 
 \item{quiet}{logical; suppress info of the download.}
-
-\item{n}{Specify maximum number of connections (axel parameter)}
-
-\item{s}{Specify maximum speed (bytes per second)}
 }
 \description{
 Download IMERG v06B Final, Early and Late Run.
-}
-\details{
-You need to have installed "Axel download accelerator
-application" and GDAL. Obs: If you are using Windows,
-the executables of "GDAL" and "AXEL" must be set as
-system variables. For install axel try the following: \cr
-
-Ubuntu/Debian users: apt-get install axel \cr
-Windows users: gpm_getaxel() \cr
-
-The use of the "PPS" ftp to download GPM and TRMM data is free, but you first need register
-your email address in http://registration.pps.eosdis.nasa.gov/registration/.
-You can found more information about axel here:\cr
-https://github.com/axel-download-accelerator/axel/.
 }
 \note{
 Modified by Ahmed Homoudi, November 2022.
