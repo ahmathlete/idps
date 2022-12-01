@@ -3,3 +3,4 @@
 ^LICENSE\.md$
 ^container
 ^prod
+^\.github$
