@@ -208,7 +208,6 @@ gpm_download <- function(path,
                          pattern = ".HDF5$",
                          full.names = T)
 
-  terra::terraOptions(todisk=TRUE)
   # loop over HDF5 files to convert to netcdf
 
   for ( ifile in 1:length(HDF5.files)){
