@@ -21,9 +21,9 @@ library(idps)
 ## ToDo list 
 
 ### Part 1:
-1. function to download GPM data 
+1. function to download GPM data (DONE)
 2. function to aggregate GPM data monthly 
-3. function to sepreate GPM data according to thresholds and systems. 
+3. function to separate GPM data according to thresholds and systems. 
 4. function for ccl 
 5. FFT and cross correlation 
 6. PIV quality control 
@@ -31,3 +31,8 @@ library(idps)
 8. writing hdf5 files 
 
 ### Part 2:
+
+
+### Miscellaneous
+1. Get climatology from GPM data long term 
+2. 

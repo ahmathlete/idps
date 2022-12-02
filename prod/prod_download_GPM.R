@@ -1,11 +1,27 @@
 
+args <- commandArgs(trailingOnly = TRUE)
+YEAR<-as.numeric(as.character(args[1]))
+
+if (YEAR==2000) {
+  DATE1<-paste0(YEAR, "-06-01")
+  DATE2<-paste0(YEAR, "-12-31")
+}else if(YEAR ==2021){
+  DATE1<-paste0(YEAR, "-01-01")
+  DATE2<-paste0(YEAR, "-09-30")
+
+}else{
+  DATE1<-paste0(YEAR, "-01-01")
+  DATE2<-paste0(YEAR, "-12-31")
+
+}
+
 # Download GPM data for the study area
 
 .libPaths("/home/h7/ahho623a/R-Packages")
 path <- "/scratch/ws/1/ahho623a-GPM_new/DATA_daily/"
 user <- "AhmedHomoudi"
 password <- "yRqQCvm7t5fErhg"
-dates <- seq.Date(as.Date("2000-06-01"),as.Date("2021-09-30"), by="day")
+Dates <- seq.Date(as.Date(DATE1),as.Date(DATE2), by="day")
 product <- 'finalrun'
 band<-"precipitationCal"
 lonMin <- 20
@@ -17,13 +33,13 @@ quiet <- TRUE
 
 library(idps)
 
-for (idate in 1:length(dates)){
+for (idate in 1:length(Dates)){
 
-  new.path<-paste0(path, format(dates[idate], "%Y%m%d"))
+  new.path<-paste0(path, format(Dates[idate], "%Y%m%d"), "/")
   gpm_download(path = new.path,
                user = user,
                password = password,
-               dates = dates[idate],
+               dates = Dates[idate],
                product,
                band= "precipitationCal",
                lonMin = lonMin,
