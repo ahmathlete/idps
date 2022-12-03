@@ -17,10 +17,10 @@ if (YEAR==2000) {
 
 # Download GPM data for the study area
 
-.libPaths("/home/h7/ahho623a/R-Packages")
-path <- "/scratch/ws/1/ahho623a-GPM_new/DATA_daily/"
-user <- "AhmedHomoudi"
-password <- "yRqQCvm7t5fErhg"
+.libPaths("/home/h7/user/R-Packages")
+path <- "/scratch/ws/1/user-GPM_new/DATA_daily/"
+user <- "user"
+password <- "password"
 Dates <- seq.Date(as.Date(DATE1),as.Date(DATE2), by="day")
 product <- 'finalrun'
 band<-"precipitationCal"

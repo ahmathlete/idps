@@ -18,9 +18,9 @@ get_time_from_HDF5_filename<-function(hdf5.name){
 wget.R <- function(url,user,password, dest_path, quiet){
 
   if (Sys.info()[1] == 'Windows') {
-    wget_command <-"wget --load-cookies C:\\.urs_cookies C:\\.urs_cookies  --keep-session-cookies"
+    wget_command <-"wget --load-cookies C:\\.urs_cookies C:\\.urs_cookies "
   }else{
-    wget_command <-"wget --load-cookies  --keep-session-cookies"
+    wget_command <-"wget --load-cookies "
   }
 
   if (quiet) {
