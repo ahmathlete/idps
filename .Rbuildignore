@@ -4,3 +4,6 @@
 ^container
 ^prod
 ^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
