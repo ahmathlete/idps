@@ -290,6 +290,6 @@ gpm_download <- function(path,
     file.remove(HDF5.files)
   }
 
-  message('Finisnsed downloading the requested data ;-)')
+  message('Finishsed downloading the requested data ;-)')
 
   }

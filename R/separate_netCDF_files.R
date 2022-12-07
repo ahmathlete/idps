@@ -1,16 +1,21 @@
 #' @title Aggregate netCDF files to monthly files.
-#' @description A function to aggregate daily netCDF files
-#' to monthly files that include the original temporal resolution
-#' for the respective month
+#' @description A function to split the monthly netCDF files to precipitation
+#' systems files, the splitting will search for time steps with precipitation less
+#' than the provided threshold. Afterwards, this time step will be remove and
+#' data after and before will be split to tmp netCDF files.
 #'
 #' @param netCDF.files A character vector listing all netCDF files
+#' @param threshold A numeric value representing the minimum precipitation rate
+#' that will be considered to delineate the precipitation objects, e.g. 5 mm/hr
+#'
 #' @param output.path A character indicating where to place output files.
 #'
 #' @return netCDF file
 #' @author Ahmed Homoudi
 #' @export
 
-aggregate_netCDF_files<-function(netCDF.files,
+separate_netCDF_files<-function(netCDF.files,
+                                threshold,
                                  output.path = "~") {
 
   # stop if not a list
@@ -75,5 +80,5 @@ aggregate_netCDF_files<-function(netCDF.files,
 
   }
 
-  message('Finishsed aggregating the data ;-)')
+  message('Finishsed producing tmp files;-)')
 }

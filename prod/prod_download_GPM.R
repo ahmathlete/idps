@@ -1,19 +1,6 @@
 
-args <- commandArgs(trailingOnly = TRUE)
-YEAR<-as.numeric(as.character(args[1]))
-
-if (YEAR==2000) {
-  DATE1<-paste0(YEAR, "-06-01")
-  DATE2<-paste0(YEAR, "-12-31")
-}else if(YEAR ==2021){
-  DATE1<-paste0(YEAR, "-01-01")
-  DATE2<-paste0(YEAR, "-09-30")
-
-}else{
-  DATE1<-paste0(YEAR, "-01-01")
-  DATE2<-paste0(YEAR, "-12-31")
-
-}
+DATE1<-"2000-06-01"
+DATE2<-"2021-09-30"
 
 # Download GPM data for the study area
 

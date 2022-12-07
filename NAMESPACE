@@ -2,6 +2,7 @@
 
 export("%>%")
 export(add_Fortran)
+export(aggregate_netCDF_files)
 export(gpm_download)
 export(mul_Fortran)
 importFrom(magrittr,"%>%")

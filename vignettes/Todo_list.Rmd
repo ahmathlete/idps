@@ -22,14 +22,15 @@ library(idps)
 
 ### Part 1:
 1. function to download GPM data (DONE)
-2. function to aggregate GPM data monthly 
+2. function to aggregate GPM data monthly (DONE)
 3. function to separate GPM data according to thresholds and systems. 
 4. function for ccl 
 5. FFT and cross correlation 
 6. PIV quality control 
 7. tracking 
-8. writing hdf5 files 
-
+8. OOP for tracks 
+9. writing hdf5/netcdf files, sounds like hdf5 files will be the sol.
+10. obtain cells characteristics from OOP class 
 ### Part 2:
 
 
