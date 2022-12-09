@@ -6,7 +6,9 @@
 [![R-CMD-check](https://github.com/ahmathlete/idps/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ahmathlete/idps/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of idps is to ...
+The goal of idps is to use object-based methods combined with a tracking 
+algorithm to utilise the GPM_3IMERGHH (V06) data set to identify and describe 
+precipitation systems. idps stands for **I**dentification and **D**escription of **P**recipitation **S**ystems.
 
 ## Installation
 
@@ -26,3 +28,20 @@ library(idps)
 ## basic example code
 ```
 
+## Poem 
+Thanks to ChatGPT for generating this beautiful poem. 
+
+Clouds swirl and spin,\
+In tropical cyclones and fronts,\
+Precipitation falls within,\
+Nature's beauty in abundance.\
+
+Convective clouds arise,\
+From heated land below,\
+A cool and welcome surprise,\
+In the sky's endless show.\
+
+Clouds bring rain and snow,\
+Nourishing the earth below,\
+A cool and beautiful glow,\
+In the sky's endless flow.\

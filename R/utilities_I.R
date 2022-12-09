@@ -40,3 +40,10 @@ wget.R <- function(url,user,password, dest_path, quiet){
 
   system(wget_command)
 }
+
+
+# check the continuity of the daily downloaded files.
+
+check_downloaded_files<-function(x, x.start, x.end){
+
+}
