@@ -4,9 +4,7 @@ Version: 0.0.0.9
 Authors@R: 
     person("Ahmed", "Homoudi", , "ahmed.homoudi@tu-dresden.de", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-6906-5986"))
-Description: The package uses object-based methods combined with a tracking 
-algorithm to utilise the GPM_3IMERGHH (V06) data set to identify and describe 
-precipitation systems. 
+Description: The package uses object-based methods combined with a tracking algorithm to utilise the GPM_3IMERGHH (V06) data set to identify and describe precipitation systems. 
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

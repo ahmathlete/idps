@@ -29,19 +29,19 @@ library(idps)
 ```
 
 ## Poem 
-Thanks to ChatGPT for generating this beautiful poem. 
+Thanks to [ChatGPT](https://chat.openai.com/chat) for generating this beautiful poem. 
 
 Clouds swirl and spin,\
 In tropical cyclones and fronts,\
 Precipitation falls within,\
-Nature's beauty in abundance.\
+Nature's beauty in abundance.
 
 Convective clouds arise,\
 From heated land below,\
 A cool and welcome surprise,\
-In the sky's endless show.\
+In the sky's endless show.
 
 Clouds bring rain and snow,\
 Nourishing the earth below,\
 A cool and beautiful glow,\
-In the sky's endless flow.\
+In the sky's endless flow.
