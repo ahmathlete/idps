@@ -14,6 +14,17 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Installtions
+### On Ubunut: 
+
+### On macOS
+
+## ON windows 
+
+Intsall Rttols 
+open Rtools termnal 
+Install FFT 
+
 ```{r setup}
 library(idps)
 ```
