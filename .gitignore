@@ -4,7 +4,10 @@
 .Ruserdata
 *.o
 *.so
-container
 inst/doc
 docs
 prod/idps_build.R
+src/Makevars
+autom4te.cache
+config.log
+config.status

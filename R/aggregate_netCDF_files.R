@@ -20,7 +20,9 @@ aggregate_netCDF_files<-function(netCDF.files,
 
     y<- unlist(stringr::str_split(x, pattern = "_"))
 
-    #15 becaue yyyymmdd-hhmmss
+    #15 because yyyymmdd-hhmmss
+    x.times<-y[!is.na(readr::parse_number(y)) &  nchar(y)==15]
+
     x.times<-y[grep(pattern = "-", y) & nchar(y)==15]
 
     return(c(x,x.times))
@@ -44,7 +46,6 @@ aggregate_netCDF_files<-function(netCDF.files,
   for(iunique in 1:length(unique_month)){
 
     sub.meta<-meta.data[meta.data$unique_month==unique_month[iunique],]
-
 
     # read the files
     r<-terra::rast(sub.meta$file)

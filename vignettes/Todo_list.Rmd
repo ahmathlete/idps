@@ -30,7 +30,7 @@ library(idps)
 7. tracking 
 8. OOP for tracks 
 9. writing hdf5/netcdf files, sounds like hdf5 files will be the sol.
-10. obtain cells characteristics from OOP class 
+10. obtain cells characteristics from OOP class (DOI: 10.1175/2009JTECHA1257.1)
 
 ### Part 2:
 1. Analysis and classifications
