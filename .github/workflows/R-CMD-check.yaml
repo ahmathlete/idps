@@ -39,7 +39,6 @@ jobs:
         if: runner.os == 'Linux'
         run: sudo apt-get install libcurl4-openssl-dev libgit2-dev libfftw3-3
 
-
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
