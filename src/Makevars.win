@@ -1,2 +1,1 @@
-PKG_CPPFLAGS=-I$(LIB_FFTW3)/include
-PKG_LIBS=-L$(LIB_FFTW3)/lib -lfftw3
+PKG_CPPFLAGS= -I. -lfftw3
