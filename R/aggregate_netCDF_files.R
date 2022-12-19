@@ -74,6 +74,9 @@ aggregate_netCDF_files<-function(netCDF.files,
                     missval=1e32,
                     overwrite=TRUE)
 
+    message(paste0("Aggregating Data for ", unique_month[iunique] , " \n",
+                   " No. of files in that month is ", length(sub.meta$file)))
+
   }
 
   message('Finishsed aggregating the data ;-)')

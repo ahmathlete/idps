@@ -6,7 +6,7 @@
 *.so
 inst/doc
 docs
-prod/idps_build.R
+prod/
 src/Makevars
 autom4te.cache
 config.log
