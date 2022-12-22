@@ -64,11 +64,13 @@ Modified by Ahmed Homoudi, November 2022.
 }
 \examples{
 \dontrun{
-gpm_download(path = '.',
-            user = 'you_user@gmail.com',
-            password = 'you_user@gmail.com',
-            dates = c('2018-01-01'),
-            product = 'finalrun')
+gpm_download(
+  path = ".",
+  user = "you_user@gmail.com",
+  password = "you_user@gmail.com",
+  dates = c("2018-01-01"),
+  product = "finalrun"
+)
 }
 }
 \author{

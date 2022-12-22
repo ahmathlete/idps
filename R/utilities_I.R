@@ -52,14 +52,19 @@ wget.R <- function(url, user, password, dest_path, quiet) {
 
 check_missing_days <- function(path2netcdf_files = "~/",
                                expected_start = "2000-06-01",
-                               expected_end = "2021-09-30") {
-  path2netcdf_files <- "/beegfs/.global1/ws/ahho623a-byebye_scratch/DATA_daily"
-  expected_start <- "2000-06-01"
-  expected_end <- "2021-09-30"
+                               expected_end = "2021-09-30",
+                               remove_incomplete = TRUE) {
   # list files
-  nc.files <- list.files(path2netcdf_files, pattern = ".nc$")
+  nc.files <- list.files(path2netcdf_files,
+    pattern = ".nc$",
+    full.names = TRUE
+  )
 
   Dates <- seq.Date(as.Date(expected_start), as.Date(expected_end), by = "day")
+
+
+  message(paste("Number of expected files/dates", length(Dates)))
+  message(paste("Number of found files/dates", length(nc.files)))
 
   meta.data <- lapply(nc.files, function(x) {
     y <- unlist(stringr::str_split(x, pattern = "_"))
@@ -81,14 +86,15 @@ check_missing_days <- function(path2netcdf_files = "~/",
   if (length(Dates) != length(nc.files)) {
     message(paste0(
       "There is ",
-      length(Dates) - length(nc.files)
+      length(Dates) - length(nc.files),
+      "missing files"
     ))
 
     # missing files
     message(" Missing Dates are: ")
     print(unique(Dates[!Dates %in% meta.data$DATE1]))
   } else {
-    message("No missing files. Now checking missting timesteps withing the daily files.")
+    message("No missing files. Now checking missing timesteps withing the daily files.")
   }
 
 
@@ -97,9 +103,17 @@ check_missing_days <- function(path2netcdf_files = "~/",
   wrong_starts <- meta.data$V2[!endsWith(meta.data$V2, "000000")]
   wrong_ends <- meta.data$V3[!endsWith(meta.data$V3, "000000")]
 
-  message("These days needs to be redownloaded:")
-  print(as.Date(lubridate::ymd_hms(c(
-    wrong_starts,
-    wrong_ends
-  ))))
+  message("These files needs to be redownloaded:")
+  print(c(
+    meta.data$V1[!endsWith(meta.data$V2, "000000")],
+    meta.data$V1[!endsWith(meta.data$V3, "000000")]
+  ))
+
+  if (remove_incomplete) {
+    message("Removing incomplete files")
+    file.remove(c(
+      meta.data$V1[!endsWith(meta.data$V2, "000000")],
+      meta.data$V1[!endsWith(meta.data$V3, "000000")]
+    ))
+  }
 }
